@@ -2,7 +2,7 @@ export type UserModel = {
   id?: string;
   username: string;
   email: string;
-  password: string
+  password?: string
 
   createdAt: Date;
   deletedAt?: Date;
@@ -21,7 +21,7 @@ export function toUserModel(queryResponse: any): UserModel {
     id: queryResponse.id ?? undefined,
     username: queryResponse.username,
     email: queryResponse.email,
-    password: queryResponse.passsword, 
+    password: queryResponse.password, 
     createdAt: new Date(queryResponse.createdAt),
     deletedAt: queryResponse.deletedAt ? new Date(queryResponse.deletedAt) : undefined,
     updatedAt: queryResponse.updatedAt ? new Date(queryResponse.updatedAt) : undefined,

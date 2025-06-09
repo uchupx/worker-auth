@@ -40,9 +40,12 @@ export class AuthHandler {
       return errorResponse(res, err)
     }
 
-    const token = this.service.login(body.username, body.password)
-
-    return successResponse(res, 200, token)
+    this.service.login(body.username, body.password)
+      .then((token) => {
+        return successResponse(res, 200, token)
+      }).catch((err: any) => {
+        return errorResponse(res, err)
+      })
   }
 
   public register(req: Request, res: Response): void {

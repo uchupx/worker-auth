@@ -23,6 +23,20 @@ export class UserRepo {
     })
   }
 
+  public async getUserByUsername(username: string): Promise<UserModel | null> {
+    const result = this.db.execute(userQuery.findByUsername, [username]);
+
+    return result.then((rows: any[]) => {
+      if (rows.length === 0) {
+        return null;
+      }
+
+      const user = toUserModel(rows[0]);
+
+      return user;
+    })
+  }
+
   public async createUser(user: UserCreateModel): Promise<UserModel> {
     const resDB = this.db.execute(userQuery.insert, [user.username, user.email, user.password]);
     return resDB.then((result: any) => {

@@ -1,11 +1,11 @@
 import { JWT, type JWT as JWT_TYPE } from "./jwt";
 
 import app from "../config/app";
+import { ErrorHandler } from "../helper/error";
+import HttpStatusCode from "../helper/enums/http";
 import type { Token } from "./auth.type";
 import type { UserRepo } from "../repo/user";
 import type { UserCreateModel } from "../repo/user.type";
-import { ErrorHandler } from "../helper/error";
-import HttpStatusCode from "../helper/enums/http";
 
 export class AuthService {
   private jwtService: JWT_TYPE
@@ -18,13 +18,20 @@ export class AuthService {
     this.userRepo = userRepo;
   }
 
-  public login(username: string, password: string): Token {
-    const body = {
-      username: username,
-      email: 'hi@uchupx.tech'
+  public async login(username: string, password: string): Promise<Token> {
+    const user = await this.userRepo.getUserByUsername(username);
+
+    if (!user) {
+      throw new ErrorHandler("User not found", null, HttpStatusCode.BAD_REQUEST);
     }
 
-    const token = this.jwtService.encodeToken(body)
+    if (!this.jwtService.verifyHash(user.password!, password)) {
+      throw new ErrorHandler("Invalid password", null, HttpStatusCode.UNAUTHORIZED);
+    }
+
+    delete user.password; // Remove password from user object
+
+    const token = this.jwtService.encodeToken(user)
 
     return {
       token,

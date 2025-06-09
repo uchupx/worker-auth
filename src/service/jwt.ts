@@ -43,7 +43,7 @@ export class JWT {
     return token;
   }
 
-  verifyHash = (sentToken: string) => {
+  verifyHash = (sentToken: string, val: string) :any => {
     const options = {
       algorithm: 'RS256',
     } as SignOptions;
@@ -52,12 +52,16 @@ export class JWT {
       sentToken,
       JWT.JWT_PUBLIC_KEY.replace(/\\n/gm, '\n'),
       options,
-      (err, decode) => {
+      (err, decode): boolean => {
         if (err) {
-          return true;
+          return false;
         }
 
-        return false;
+        if (decode && typeof decode === 'string') {
+          return decode === val;
+        } else {
+          return false;
+        }
       },
     );
 
