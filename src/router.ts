@@ -1,11 +1,12 @@
 
 import type { Request, Response } from "express"
 import HttpStatusCode from "./helper/enums/http.ts"
-import { successResponse } from "./helper/reqres"
+import { successResponse } from "./handler/response"
 import { log } from "./helper/logger"
 import middleware from "./middleware"
 
 import type { Config } from "./config/app"
+import { handlers } from "./handler/index"
 
 export enum RouteMethod {
   Get = 'get',
@@ -26,7 +27,7 @@ export function InitRoute(app: any, config: Config) {
       method: RouteMethod.Get,
       path: "/version",
       func: (req: Request, res: Response): any => {
-        res.status(HttpStatusCode.OK).send(config.app.version)
+        successResponse(res, HttpStatusCode.OK, config.app.version)
       }
     },
     {
@@ -34,12 +35,21 @@ export function InitRoute(app: any, config: Config) {
       path: "/ping",
       needAuth: true,
       func: (req: Request, res: Response): any => {
-        res.status(HttpStatusCode.OK).send(successResponse("pong !!!"))
+        successResponse(res, HttpStatusCode.OK, "pong")
       }
     }
   ] as Array<Route>
 
   log.info(`Initialize route`)
+  const handler = handlers()
+  for (const idx in handler) {
+    if (!handler[idx] || !handler[idx].routes) {
+      log.warn(`Handler ${idx} does not have routes method, skipping`)
+      continue
+    }
+
+    routes.push(...handler[idx].routes())
+  }
 
   routes.forEach(r => {
     r.needAuth = r.needAuth || false

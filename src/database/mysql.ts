@@ -1,10 +1,10 @@
 
 import mysql from 'mysql2'
 import { log } from '../helper/logger'
-import type { ConnectionOptions, Connection, Pool } from 'mysql2';
+import type { ConnectionOptions, Pool } from 'mysql2';
 
 export class Database {
-  public connection: Pool
+  private connection: Pool
   private _debug: boolean = false
 
   constructor(conf: ConnectionOptions) {

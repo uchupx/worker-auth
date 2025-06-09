@@ -1,4 +1,4 @@
-# worker-shift-ts
+# worker-auth
 
 To install dependencies:
 
