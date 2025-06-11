@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+  
 
 jobs:
   build-and-push:
@@ -11,9 +13,6 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-      - name: Print Docker username
-        run: |
-          echo "Docker username is: ${{ secrets }}"
 
       - name: Log in to Docker hub
         uses: docker/login-action@v2
