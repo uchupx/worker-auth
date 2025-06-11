@@ -28,4 +28,4 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: uchupx/worker-auth:latest-dev, uchupx/worker-auth:${{ steps.vars.outputs.short_sha }}-dev
+          tags: ${{ secrets.DOCKER_USERNAME }}/worker-auth:latest-dev, ${{ secrets.DOCKER_USERNAME }}/worker-auth:${{ steps.vars.outputs.short_sha }}-dev
