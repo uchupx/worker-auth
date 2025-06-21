@@ -7,7 +7,7 @@
     "@types/bun": "^1.2.15"
   },
   "scripts": {
-    "build": "bun build src/index.ts --outdir dist --target node",
+    "build": "bun build src/index.ts --outdir dist --target bun --external=@grpc/grpc-js --external=@grpc/proto-loader",
     "dev": "bun --watch src/index.ts"
   },
   "peerDependencies": {

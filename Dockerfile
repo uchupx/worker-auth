@@ -18,6 +18,10 @@ FROM base AS release
 COPY --from=prerelease /app ./
 COPY --from=prerelease /app/dist ./
 
+USER root
+RUN chown -R bun:bun .
 USER bun
+
+
 EXPOSE 3000
 ENTRYPOINT ["bun", "run", "index.js"]

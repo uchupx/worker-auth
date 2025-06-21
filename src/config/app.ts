@@ -35,7 +35,6 @@ export type Config = {
 const projectPath = `${__dirname}/../../`;
 
 function getConfig(): Config {
-  const fs = require('fs')
   const version = fs.readFileSync(projectPath + '/version', 'utf8')
 
   let conf = JSON.parse(fs.readFileSync(projectPath + '/.env.json', 'utf8')) as Config
