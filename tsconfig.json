@@ -23,6 +23,13 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
+    "paths": {
+      "@helper/*": ["./src/helper/*"],
+      "@app/*": ["./src/*"],
+      "@service/*": ["./src/service/*"],
+      "@restApi/*": ["./src/handler/rest/*"],
+      "@grpcApi/*": ["./src/handler/grpc/*"]
+    }
   },
   "include": [
     "src/**/*.ts"

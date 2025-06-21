@@ -1,5 +1,5 @@
 import type { Request } from "express";
-import type { Route } from "../router";
+import type { Route } from "@app/router.rest";
 
 export interface Handler {
   routes(): Array<Route>

@@ -1,10 +1,10 @@
 import type { Request, Response } from "express"
-import { RouteMethod, type Route } from "../router"
+import { RouteMethod, type Route } from "@app/router.rest"
 import { errorResponse, successResponse } from "./response"
-import { AuthService } from "../service/auth"
+import { AuthService } from "@service/auth"
 import { validate } from "./validator"
 import { LoginRequestSchema, RegisterRequestSchema, type LoginRequest, type RegisterRequest } from "./auth.type"
-import type { Service } from "../service/interface"
+import type { Service } from "@service/interface"
 
 
 export class AuthHandler {

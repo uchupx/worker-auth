@@ -1,17 +1,18 @@
 
-import type { Request, Response } from "express"
+import type { Application, Request, Response } from "express"
 import HttpStatusCode from "./helper/enums/http.ts"
-import { successResponse } from "./handler/response"
-import { log } from "./helper/logger"
-import middleware from "./middleware"
+import { successResponse } from "./handler/rest/response.ts"
+import { log } from "./helper/logger.ts"
+import middleware from "./middleware/index.ts"
 
-import type { Config } from "./config/app"
-import { handlers } from "./handler/index"
+import type { Config } from "./config/app.ts"
+import { handlers } from "./handler/rest/index"
 
 export enum RouteMethod {
   Get = 'get',
   Post = 'post',
-  Put = 'put'
+  Put = 'put',
+  Delete = 'delete',
 }
 
 export type Route = {
@@ -21,12 +22,12 @@ export type Route = {
   func(req: Request, res: Response): any
 }
 
-export function InitRoute(app: any, config: Config) {
+export function InitRoute(app: Application, config: Config) {
   const routes = [
     {
       method: RouteMethod.Get,
       path: "/version",
-      func: (req: Request, res: Response): any => {
+      func: (_req: Request, res: Response): any => {
         successResponse(res, HttpStatusCode.OK, config.app.version)
       }
     },
@@ -34,7 +35,7 @@ export function InitRoute(app: any, config: Config) {
       method: RouteMethod.Get,
       path: "/ping",
       needAuth: true,
-      func: (req: Request, res: Response): any => {
+      func: (_req: Request, res: Response): any => {
         successResponse(res, HttpStatusCode.OK, "pong")
       }
     }
@@ -60,7 +61,7 @@ export function InitRoute(app: any, config: Config) {
       app[r.method](r.path, r.func)
     }
 
-    log.info(`Route : ${r.method.toUpperCase()}: ${r.path} -> ${r.func.name.replace('bound ', '')}`)
+    log.info(`Route Rest API : ${r.method.toUpperCase()}: ${r.path} -> ${r.func.name.replace('bound ', '')}`)
   })
 }
 

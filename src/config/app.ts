@@ -18,6 +18,7 @@ export type Config = {
   },
   app: {
     port: number;
+    grpc_port: number;
     env: 'development' | 'production';
     version: string;
   }

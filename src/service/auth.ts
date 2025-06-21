@@ -5,7 +5,7 @@ import { ErrorHandler } from "../helper/error";
 import HttpStatusCode from "../helper/enums/http";
 import type { Token } from "./auth.type";
 import type { UserRepo } from "../repo/user";
-import type { UserCreateModel } from "../repo/user.type";
+import type { UserCreateModel, UserModel } from "../repo/user.type";
 
 export class AuthService {
   private jwtService: JWT_TYPE
@@ -55,5 +55,17 @@ export class AuthService {
       .catch((err) => {
         throw new ErrorHandler(err.message, err, HttpStatusCode.INTERNAL_SERVER_ERROR)
       })
+  }
+
+  public isTokenValid(token: string): string {
+    const result = this.jwtService.verifyToken(token) as any
+    if (result.tokenExp) {
+      throw new ErrorHandler("failed to decode token", result.err, HttpStatusCode.BAD_REQUEST)
+    }
+    if (!result.decode.id) {
+      throw new ErrorHandler("failed to decode token", null, HttpStatusCode.INTERNAL_SERVER_ERROR)
+    }
+
+    return result.decode.id
   }
 }

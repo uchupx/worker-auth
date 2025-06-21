@@ -1,5 +1,5 @@
-import { ErrorHandler } from "../helper/error"
-import HttpStatusCode from "../helper/enums/http"
+import { ErrorHandler } from "@helper/error"
+import HttpStatusCode from "@helper/enums/http"
 import type { AnySchema } from "joi"
 
 export function validate<T>(schema: AnySchema, data: any, acceptNull = false): [ErrorHandler | undefined, T] {

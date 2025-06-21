@@ -1,4 +1,4 @@
-import { services } from "../service";
+import { services } from "@service/index";
 import { AuthHandler } from "./auth";
 import type { Handler } from "./interface";
 

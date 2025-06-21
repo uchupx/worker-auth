@@ -1,5 +1,5 @@
 import type { Response } from "express"
-import { ErrorHandler as ErrorHandlerType} from "../helper/error"
+import { ErrorHandler as ErrorHandlerType} from "@helper/error"
 
 type response = {
   message?: string,

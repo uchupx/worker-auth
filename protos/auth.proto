@@ -2,7 +2,6 @@ syntax = "proto3";
 
 package auth;
 
-
 service AuthService {
   rpc Login(LoginRequest) returns (LoginResponse);
   rpc Logout(LogoutRequest) returns (LogoutResponse);
