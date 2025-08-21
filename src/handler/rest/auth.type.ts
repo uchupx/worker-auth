@@ -4,11 +4,13 @@ import Joi from "joi";
 export type LoginRequest = {
   username: string;
   password: string;
+  secret: string;
 }
 
 export const LoginRequestSchema: ObjectSchema = Joi.object({
   username: Joi.string().required(),
   password: Joi.string().required(),
+  secret: Joi.string().required(),
 })
 
 
@@ -16,6 +18,7 @@ export type RegisterRequest = {
   username: string;
   email: string;
   password: string;
+  secret: string;
 }
 
 export const RegisterRequestSchema: ObjectSchema = Joi.object({
@@ -28,4 +31,5 @@ export const RegisterRequestSchema: ObjectSchema = Joi.object({
       "string.pattern.base":
         "Password must be at least 8 characters long and include letters, numbers, and symbols.",
     }),
+    secret: Joi.string().required(),
 })

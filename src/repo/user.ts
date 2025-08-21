@@ -23,8 +23,8 @@ export class UserRepo {
     })
   }
 
-  public async getUserByUsername(username: string): Promise<UserModel | null> {
-    const result = this.db.execute(userQuery.findByUsername, [username]);
+  public async getUserByUsername(username: string, clientSecret: string): Promise<UserModel | null> {
+    const result = this.db.execute(userQuery.findByUsername, [username, clientSecret]);
 
     return result.then((rows: any[]) => {
       if (rows.length === 0) {
@@ -38,7 +38,7 @@ export class UserRepo {
   }
 
   public async createUser(user: UserCreateModel): Promise<UserModel> {
-    const resDB = this.db.execute(userQuery.insert, [user.username, user.email, user.password]);
+    const resDB = this.db.execute(userQuery.insert, [user.username, user.email, user.password, user.client_id]);
     return resDB.then((result: any) => {
       if (result.affectedRows === 0) {
         throw new Error('Failed to create user');

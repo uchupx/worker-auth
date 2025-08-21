@@ -40,7 +40,7 @@ export class AuthHandler {
       return errorResponse(res, err)
     }
 
-    this.service.login(body.username, body.password)
+    this.service.login(body.username, body.password, body.secret)
       .then((token) => {
         return successResponse(res, 200, token)
       }).catch((err: any) => {
@@ -48,13 +48,13 @@ export class AuthHandler {
       })
   }
 
-  public register(req: Request, res: Response): void {
+  public async register(req: Request, res: Response): Promise<void> {
     const [err, body] = validate<RegisterRequest>(RegisterRequestSchema, req.body)
     if (err) {
       return errorResponse(res, err)
     }
 
-    return this.service.register(body.username, body.email, body.password).then(() => {
+    return await this.service.register(body.username, body.email, body.password, body.secret).then(() => {
       successResponse(res, 201, "User registered successfully")
     }).catch((err: any) => {
       errorResponse(res, err)

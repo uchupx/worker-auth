@@ -45,6 +45,63 @@ export class AuthHandler {
       })
     }
   }
+
+  public async login(call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) {
+      let username = call.request.username as string
+      let password = call.request.password as string
+      let secret = call.request.secret as string
+
+
+      if (!username ||!password ||!secret) {
+          callback({
+              code: grpc.status.INVALID_ARGUMENT,
+              message: "username, password, and secret are required"
+          })
+      }
+
+      try {
+          const token = await this.authService.login(username, password, secret)
+          console.log("login successful", token)
+          callback(null, {
+              token: token.token
+          })
+      } catch (err) {
+          log.error("failed to login user", err)
+          callback({
+              code: grpc.status.INTERNAL,
+              message: "something error"
+          })
+      }
+  }
+
+
+  public async register(call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) {
+      let username = call.request.username as string
+      let email = call.request.email as string
+      let password = call.request.password as string
+      let secret = call.request.secret as string
+
+      if (!username ||!password ||!secret) {
+          return callback({
+              code: grpc.status.INVALID_ARGUMENT,
+              message: "username, email, password, and secret are required"
+          })
+      }
+
+      try {
+          const result = await this.authService.register(username, email, password, secret)
+          callback(null, {
+              id: result.id,
+          })
+          return
+      } catch (err) {
+          log.error("failed to register user", err)
+          callback({
+              code: grpc.status.INTERNAL,
+              message: "something error"
+          })
+      }
+  }
 }
 
 

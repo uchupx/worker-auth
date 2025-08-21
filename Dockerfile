@@ -14,7 +14,7 @@ COPY . .
 ENV NODE_ENV=production
 RUN bun run build
 
-FROM base AS release
+FROM base AS default 
 COPY --from=prerelease /app ./
 COPY --from=prerelease /app/dist ./
 
