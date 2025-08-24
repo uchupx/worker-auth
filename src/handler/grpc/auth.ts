@@ -35,7 +35,8 @@ export class AuthHandler {
       const user = await this.userService.getUser(id)
       callback(null, {
         username: user.username,
-        email: user.email
+        email: user.email,
+          id: id,
       })
     } catch (err) {
       log.error("failed to parse token", err)
