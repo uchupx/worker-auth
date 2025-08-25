@@ -4,6 +4,9 @@ services:
   auth-worker:
     build:
       context: .
+    env_file:
+      - path: "./.env.deployer"
+        required: true
     ports:
       - "${HOST_API_PORT}:3000"
       - "${HOST_GRPC_PORT}:50051"
