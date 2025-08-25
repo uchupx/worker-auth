@@ -5,12 +5,31 @@ services:
     build:
       context: .
     ports:
-      - "3000:3000"
+      - "${HOST_API_PORT}:3000"
+      - "${HOST_GRPC_PORT}:50051"
     environment:
       NODE_ENV: production
+    volumes:
+      - ${ENV_FILE}:/app/.env.json
+      - ${PRIVATE_FILE}:/app/api_private.pem
+      - ${PUBLIC_FILE}:/app/api_public.pem
+    depends_on:
+      - redis
+    networks:
+      - worker-auth
+      - mysql_network
 
+  redis:
+    image: redis:latest
+    container_name: redis 
+    ports:
+      - "6379:6379" # Default Redis port
+    networks:
+      - worker-auth
+    command: ["redis-server", "--bind", "0.0.0.0"]
 
-
-volumes:
-  mysql_data:
-    driver: local
+networks:
+  worker-auth:
+    driver: bridge
+  mysql_network:
+    external: true
