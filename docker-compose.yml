@@ -10,9 +10,9 @@ services:
     environment:
       NODE_ENV: production
     volumes:
-      - ${ENV_FILE}:/app/.env.json
-      - ${PRIVATE_FILE}:/app/api_private.pem
-      - ${PUBLIC_FILE}:/app/api_public.pem
+      - ${ENV_FILE}:/app/.env.json:Z
+      - ${PRIVATE_FILE}:/app/api_private.pem:Z
+      - ${PUBLIC_FILE}:/app/api_public.pem:Z
     depends_on:
       - redis
     networks:
