@@ -73,6 +73,7 @@ export class AuthService {
 
     public isTokenValid(token: string): string {
         const result = this.jwtService.verifyToken(token) as any
+
         if (result.tokenExp) {
             throw new ErrorHandler("failed to decode token", result.err, HttpStatusCode.BAD_REQUEST)
         }
