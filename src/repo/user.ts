@@ -1,6 +1,6 @@
-import type { Database } from "../database/mysql";
-import { userQuery } from "./user.query";
-import { toUserModel, type UserCreateModel, type UserModel } from "./user.type";
+import type {Database} from "../database/mysql";
+import {userQuery} from "./user.query";
+import {toUserModel, type UserCreateModel, type UserModel} from "./user.type";
 
 export class UserRepo {
   private db: Database;
@@ -40,18 +40,32 @@ export class UserRepo {
 
   public async createUser(user: UserCreateModel): Promise<UserModel> {
     const resDB = this.db.execute(userQuery.insert, [user.username, user.email, user.password, user.client_id]);
-    return resDB.then((result: any) => {
+    return resDB.then(async (result: any) => {
       if (result.affectedRows === 0) {
         throw new Error('Failed to create user');
       }
 
-      const userId = result.insertId;
-      const userModel = toUserModel(user);
+      const resUser = await this.getUserByUsernameAndClientID(user.username, user.client_id!)
+        if (!resUser) {
+            throw  new Error('Failed to get user after create')
+        }
 
-      userModel.id = userId;
-
-      return userModel;
+        return toUserModel(resUser);
     });
+  }
+
+  private async getUserByUsernameAndClientID(username: string, clientid: string): Promise<UserModel | null> {
+      const result = this.db.execute(userQuery.findByUsernameAndClientId, [username, clientid]);
+
+      return result.then((rows: any[]) => {
+          if (rows.length === 0) {
+              return null;
+          }
+
+          const user = toUserModel(rows[0]);
+
+          return user;
+      })
   }
 
   public async updatePassword(user: UserModel): Promise<UserModel> {
