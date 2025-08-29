@@ -9,6 +9,7 @@ services:
       - "${HOST_GRPC_PORT}:50051"
     environment:
       NODE_ENV: production
+    container_name: worker-auth
     volumes:
       - ${ENV_FILE}:/app/.env.json:ro
       - ${PRIVATE_FILE}:/app/api_private.pem:ro
@@ -16,12 +17,12 @@ services:
     depends_on:
       - redis
     networks:
-      - worker-auth
+      - worker-auth-net
       - mysql_network
 
   redis:
     image: redis:latest
-    container_name: redis 
+    container_name: worker-auth-redis
     ports:
       - "6379:6379" # Default Redis port
     networks:
@@ -31,5 +32,6 @@ services:
 networks:
   worker-auth:
     driver: bridge
+    name: worker-auth-net
   mysql_network:
     external: true
