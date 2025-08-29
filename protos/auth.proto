@@ -7,6 +7,7 @@ service AuthService {
   rpc Logout(LogoutRequest) returns (LogoutResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
 }
 
 message LoginRequest {
@@ -53,4 +54,14 @@ message RegisterUserRequest {
 message RegisterUserResponse {
   string id = 1;
   string message = 2;
+}
+
+message ChangePasswordRequest {
+  string token = 1;
+  string old_password = 2;
+  string new_password = 3;
+}
+
+message ChangePasswordResponse {
+  string message = 1;
 }

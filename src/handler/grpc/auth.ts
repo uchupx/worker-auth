@@ -103,6 +103,38 @@ export class AuthHandler {
           })
       }
   }
+
+  public async changePassword(call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) {
+      let token = call.request.token as string
+      let oldPassword = call.request.old_password as string
+      let newPassword = call.request.new_password as string
+      if (!token ||!oldPassword ||!newPassword) {
+          return callback({
+              code: grpc.status.INVALID_ARGUMENT,
+              message: "token, old_password,and new_password are required"
+          })
+      }
+
+      try {
+          const id = this.authService.isTokenValid(token)
+          const user = await this.userService.changePassword(id, oldPassword, newPassword)
+          callback(null, {
+              username: user.username,
+              email: user.email,
+              id: id,
+          })
+
+          return
+      } catch (err) {
+          log.error("failed to parse token", err)
+          callback({
+              code: grpc.status.INTERNAL,
+              message: "something error"
+          })
+      }
+
+
+  }
 }
 
 

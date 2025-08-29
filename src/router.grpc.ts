@@ -10,5 +10,6 @@ export function InitRouteGRPC(app: grpc.Server, config: Config) {
         GetUser: handler.authHandler.getUser.bind(handler.authHandler),
         Login: handler.authHandler.login.bind(handler.authHandler),
         RegisterUser: handler.authHandler.register.bind(handler.authHandler),
+        ChangePassword: handler.authHandler.changePassword.bind(handler.authHandler),
     })
 }

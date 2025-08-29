@@ -23,6 +23,7 @@ export class UserRepo {
     })
   }
 
+
   public async getUserByUsername(username: string, clientSecret: string): Promise<UserModel | null> {
     const result = this.db.execute(userQuery.findByUsername, [username, clientSecret]);
 
@@ -51,5 +52,17 @@ export class UserRepo {
 
       return userModel;
     });
+  }
+
+  public async updatePassword(user: UserModel): Promise<UserModel> {
+      const resDB = this.db.execute(userQuery.updatePassword, [user.password, user.id]);
+      return resDB.then(async (result: any) => {
+          if (result.affectedRows === 0) {
+              throw new Error('Failed to update password');
+          }
+
+          return user;
+      })
+
   }
 }
