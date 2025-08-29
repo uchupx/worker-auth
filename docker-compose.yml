@@ -1,7 +1,8 @@
 version: '3.9'
+name: worker-auth
 
 services:
-  auth-worker:
+  api:
     build:
       context: .
     ports:
@@ -9,7 +10,7 @@ services:
       - "${HOST_GRPC_PORT}:50051"
     environment:
       NODE_ENV: production
-    container_name: worker-auth
+    container_name: api
     volumes:
       - ${ENV_FILE}:/app/.env.json:ro
       - ${PRIVATE_FILE}:/app/api_private.pem:ro
@@ -22,7 +23,7 @@ services:
 
   redis:
     image: redis:latest
-    container_name: worker-auth-redis
+    container_name: redis
     ports:
       - "6379:6379" # Default Redis port
     networks:
