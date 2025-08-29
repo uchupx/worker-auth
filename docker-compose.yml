@@ -17,7 +17,7 @@ services:
     depends_on:
       - redis
     networks:
-      - worker-auth-net
+      - worker-auth
       - mysql_network
 
   redis:
