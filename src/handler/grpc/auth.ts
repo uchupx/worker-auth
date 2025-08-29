@@ -108,6 +108,7 @@ export class AuthHandler {
       let token = call.request.token as string
       let oldPassword = call.request.old_password as string
       let newPassword = call.request.new_password as string
+
       if (!token ||!oldPassword ||!newPassword) {
           return callback({
               code: grpc.status.INVALID_ARGUMENT,
