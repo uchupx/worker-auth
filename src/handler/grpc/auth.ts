@@ -97,6 +97,7 @@ export class AuthHandler {
           return
       } catch (err) {
           log.error("failed to register user", err)
+
           callback({
               code: grpc.status.INTERNAL,
               message: "something error"
