@@ -6,18 +6,18 @@ declare global {
     }
 }
 
-import type { NextFunction, Request, Response } from "express"
+import type {NextFunction, Request, Response} from "express"
 
 const authorization = async (req: Request, res: Response, next: NextFunction) => {
-    const bearerToken = req.headers.authorization?.split(' ')[1]
-
-    if (!bearerToken) {
+    const m = req.headers.authorization?.match(/^Bearer\s+(.+)$/i)
+    if (!m) {
+        res.setHeader('WWW-Authenticate', 'Bearer')
         return res.status(401).json({message: "Unauthorized"})
     }
 
+    req.token = m[1]
 
 
-    req.token = bearerToken
     next()
 }
 
