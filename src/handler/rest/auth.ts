@@ -58,7 +58,8 @@ export class AuthHandler {
     public async register(req: Request, res: Response): Promise<void> {
         const [err, body] = validate<RegisterRequest>(RegisterRequestSchema, req.body)
         if (err) {
-            return errorResponse(res, err)
+            errorResponse(res, err)
+            return
         }
 
         return await this.service.register(body.username, body.email, body.password, body.secret).then(() => {

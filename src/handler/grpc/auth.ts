@@ -31,7 +31,7 @@ export class AuthHandler {
     }
 
     try {
-      const id = this.authService.isTokenValid(token)
+      const id = await this.authService.isTokenValid(token)
       const user = await this.userService.getUser(id)
       callback(null, {
         username: user.username,
@@ -118,7 +118,7 @@ export class AuthHandler {
       }
 
       try {
-          const id = this.authService.isTokenValid(token)
+          const id = await this.authService.isTokenValid(token)
           const user = await this.userService.changePassword(id, oldPassword, newPassword)
           callback(null, {
               username: user.username,
@@ -140,10 +140,11 @@ export class AuthHandler {
       let token = call.request.token as string
 
       if (!token) {
-          callback({
+           callback({
               code: grpc.status.INVALID_ARGUMENT,
               message: "token is required"
           })
+          return
       }
 
       try {
