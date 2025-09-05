@@ -31,7 +31,7 @@ export class AuthHandler {
     }
 
     try {
-      const id = this.authService.isTokenValid(token)
+      const id = await this.authService.isTokenValid(token)
       const user = await this.userService.getUser(id)
       callback(null, {
         username: user.username,
@@ -118,7 +118,7 @@ export class AuthHandler {
       }
 
       try {
-          const id = this.authService.isTokenValid(token)
+          const id = await this.authService.isTokenValid(token)
           const user = await this.userService.changePassword(id, oldPassword, newPassword)
           callback(null, {
               username: user.username,
@@ -134,8 +134,30 @@ export class AuthHandler {
               message: "something error"
           })
       }
+  }
 
+  public async logout(call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) {
+      let token = call.request.token as string
 
+      if (!token) {
+           callback({
+              code: grpc.status.INVALID_ARGUMENT,
+              message: "token is required"
+          })
+          return
+      }
+
+      try {
+          await this.authService.revokeToken(token)
+          callback(null, {})
+          return
+      } catch (err) {
+          log.error("failed to revoke token", err)
+          callback({
+              code: grpc.status.INTERNAL,
+              message: "something error"
+          })
+      }
   }
 }
 
