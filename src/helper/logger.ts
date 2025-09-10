@@ -1,12 +1,14 @@
 import {createLogger, transports, format} from "winston";
 import path from "path";
+import App from "../config/app";
 
-const logFilePath = path.join(process.cwd(), "logs", "app.log");
+const conf = App.getConfig
+const logFilePath = path.join(process.cwd(), conf.app.log_file);
 
 export const log = createLogger({
     defaultMeta: {
-        app_name: "worker-auth",
-        version: "1.0.0",
+        app_name: conf.app.name,
+        version: conf.app.version,
     },
     transports: [
         new transports.Console({
@@ -29,6 +31,7 @@ export const log = createLogger({
 });
 
 import fs from "fs";
+import app from "@app/config/app.ts";
 
 const logDir = path.dirname(logFilePath);
 if (!fs.existsSync(logDir)) {

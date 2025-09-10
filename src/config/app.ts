@@ -21,6 +21,9 @@ export type Config = {
     grpc_port: number;
     env: 'development' | 'production';
     version: string;
+    log_level: 'info' | 'error' | 'debug';
+    log_file: string;
+    name: string;
   }
   service: {
     user: ServiceConfig;
