@@ -15,6 +15,8 @@ export type Config = {
   },
   redis: {
     url: string;
+    maxConnections: number;
+    database: number;
   },
   app: {
     port: number;
