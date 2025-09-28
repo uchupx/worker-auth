@@ -4,6 +4,7 @@ import {AuthService} from "./auth"
 import type {Service} from "./interface"
 import {UserService} from "./user"
 import type {ClientRepo} from "@app/repo/client.ts";
+import {ClientService} from "@service/client.ts";
 import Redis from "@app/database/redis.ts";
 import app from "@app/config/app.ts";
 import type {RedisClientOptions} from "redis";
@@ -22,6 +23,7 @@ export const services = (): { [key: string]: Service } => {
 
     return {
         auth: authService,
-        user: (new UserService(userRepo))
+        user: (new UserService(userRepo)),
+        client: (new ClientService(clientRepo))
     }
 }

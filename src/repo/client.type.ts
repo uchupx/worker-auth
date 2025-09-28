@@ -26,8 +26,8 @@ export function toClientModel(queryResponse: any): ClientModel {
         name: queryResponse.name,
         secret: queryResponse.secret,
         redirectUris: urls || [],
-        createdAt: new Date(queryResponse.createdAt),
-        deletedAt: queryResponse.deletedAt ? new Date(queryResponse.deletedAt) : undefined,
-        updatedAt: queryResponse.updatedAt ? new Date(queryResponse.updatedAt) : undefined,
+        createdAt: new Date(queryResponse.created_at),
+        deletedAt: queryResponse.deleted_at ? new Date(queryResponse.deleted_at) : undefined,
+        updatedAt: queryResponse.updated_at ? new Date(queryResponse.updated_at) : undefined,
     }
 }
