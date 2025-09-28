@@ -1,6 +1,8 @@
 import type {Database} from "@app/database/mysql.ts";
 import {type ClientCreateModel, type ClientModel, toClientModel} from "@app/repo/client.type.ts";
 import {clientQuery} from "@app/repo/client.query.ts";
+import {paginationResponse} from "@restApi/response.ts";
+import {pagianationQuery} from "@app/repo/query.ts";
 
 
 export class ClientRepo {
@@ -38,6 +40,30 @@ export class ClientRepo {
             const client = toClientModel(rows[0]);
 
             return client;
+        });
+    }
+
+    /**
+     * Get Clients by limit and offset
+     * @param limit - limit of result
+     * @param offset - start from num row
+     */
+    public async getClients(limit: Number, offset: Number): Promise<ClientModel[]> {
+        const query = pagianationQuery(clientQuery.finds, limit.valueOf(), offset.valueOf())
+        const resDB = this.db.execute(query);
+
+        return resDB.then((rows: any[])=> {
+            if (rows.length == 0) {
+                return [];
+            }
+
+            const data: ClientModel[] = []
+
+            rows.forEach(i => {
+                data.push(toClientModel(i))
+            })
+
+            return data
         });
     }
 }
