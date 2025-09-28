@@ -7,6 +7,7 @@ import middleware from "./middleware/index.ts"
 
 import type { Config } from "./config/app.ts"
 import { handlers } from "./handler/rest/index"
+import {services} from "@app/service";
 
 export enum RouteMethod {
   Get = 'get',

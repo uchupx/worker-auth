@@ -106,7 +106,6 @@ export class AuthService {
         try {
             await this.isTokenValid(token)
 
-
             await this.redis.del(`${this.TOKENKEY}${token}`)
         } catch (e) {
             throw e

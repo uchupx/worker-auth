@@ -46,7 +46,7 @@ export function errorResponse(res: Response, error: ErrorHandlerType | Error): a
         code = error.getCode()
         message = error.getMessage()
     } else {
-        code = 500
+        message = error.message || "internal Server Error"
     }
 
     return res.status(code).json({
