@@ -15,12 +15,17 @@ export type Config = {
   },
   redis: {
     url: string;
+    maxConnections: number;
+    database: number;
   },
   app: {
     port: number;
     grpc_port: number;
     env: 'development' | 'production';
     version: string;
+    log_level: 'info' | 'error' | 'debug';
+    log_file: string;
+    name: string;
   }
   service: {
     user: ServiceConfig;

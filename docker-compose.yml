@@ -15,6 +15,7 @@ services:
       - ${ENV_FILE}:/app/.env.json:ro
       - ${PRIVATE_FILE}:/app/api_private.pem:ro
       - ${PUBLIC_FILE}:/app/api_public.pem:ro
+      - ${LOG_FILE}:/app/worker-auth.log
     depends_on:
       - redis
     networks:

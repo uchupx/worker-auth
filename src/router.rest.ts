@@ -56,7 +56,8 @@ export function InitRoute(app: Application, config: Config) {
     r.needAuth = r.needAuth || false
 
     if (r.needAuth) {
-      app[r.method](r.path, middleware.authorization, r.func)
+      // @ts-ignore
+        app[r.method](r.path, middleware.authorization, r.func)
     } else {
       app[r.method](r.path, r.func)
     }
