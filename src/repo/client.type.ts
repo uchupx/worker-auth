@@ -11,14 +11,21 @@ export type ClientModel = {
 
 
 export type ClientCreateModel = Omit<ClientModel, 'id' | 'createdAt' | 'updatedAt'>;
+export type ClientUpdateModel = Omit<ClientModel, 'secret' | 'createdAt' | 'updatedAd'>;
+
 export function toClientModel(queryResponse: any): ClientModel {
     if (!queryResponse) {
         throw new Error('Invalid query response: response is null or undefined');
     }
 
-    let urls = queryResponse.redirectUris;
+    let urls = queryResponse.redirect_uris;
+
     if (typeof urls === 'string') {
-        urls = JSON.parse(urls);
+        try {
+            urls = JSON.parse(urls);
+        } catch (e) {
+            urls = []
+        }
     }
 
     return {
